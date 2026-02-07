@@ -1,18 +1,14 @@
+import * as React from "react";
+import { subDays, startOfDay, endOfDay } from "date-fns";
+import { DateRange } from "react-day-picker";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { DateRangePicker } from "@/components/analytics/DateRangePicker";
 import {
   AreaChart,
   Area,
   BarChart,
   Bar,
-  LineChart,
   Line,
   PieChart,
   Pie,
@@ -24,7 +20,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { Calendar, Download, TrendingUp, TrendingDown } from "lucide-react";
+import { Download, TrendingUp, TrendingDown } from "lucide-react";
 
 const revenueData = [
   { name: "Mon", revenue: 4500, orders: 12 },
@@ -61,11 +57,16 @@ const hourlyData = [
 ];
 
 const Analytics = () => {
+  const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
+    from: startOfDay(subDays(new Date(), 6)),
+    to: endOfDay(new Date()),
+  });
+
   return (
     <DashboardLayout title="Analytics">
       <div className="animate-fade-in space-y-6">
         {/* Page Header */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Analytics & Insights</h1>
             <p className="text-sm text-muted-foreground">
@@ -73,19 +74,11 @@ const Analytics = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Select defaultValue="7days">
-              <SelectTrigger className="w-[160px]">
-                <Calendar className="mr-2 h-4 w-4" />
-                <SelectValue placeholder="Select period" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="today">Today</SelectItem>
-                <SelectItem value="7days">Last 7 Days</SelectItem>
-                <SelectItem value="30days">Last 30 Days</SelectItem>
-                <SelectItem value="90days">Last 90 Days</SelectItem>
-              </SelectContent>
-            </Select>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <DateRangePicker
+              dateRange={dateRange}
+              onDateRangeChange={setDateRange}
+            />
             <Button variant="outline" className="gap-2">
               <Download className="h-4 w-4" />
               Export
