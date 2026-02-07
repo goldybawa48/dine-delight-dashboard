@@ -1,20 +1,22 @@
+import * as React from "react";
+import { subDays, startOfDay, endOfDay } from "date-fns";
+import { DateRange } from "react-day-picker";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { TodayStats } from "@/components/dashboard/TodayStats";
 import { VisitsChart } from "@/components/dashboard/VisitsChart";
 import { CustomerPieChart } from "@/components/dashboard/CustomerPieChart";
-import { Users, IndianRupee, ShoppingCart, QrCode, Calendar, Copy } from "lucide-react";
+import { DateRangePicker } from "@/components/analytics/DateRangePicker";
+import { Users, IndianRupee, ShoppingCart, QrCode, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { toast } from "sonner";
 
 const Dashboard = () => {
+  const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
+    from: startOfDay(subDays(new Date(), 6)),
+    to: endOfDay(new Date()),
+  });
+
   const copyPosUrl = () => {
     navigator.clipboard.writeText("...825d91c2");
     toast.success("POS URL copied to clipboard!");
@@ -24,7 +26,7 @@ const Dashboard = () => {
     <DashboardLayout title="Dashboard">
       <div className="animate-fade-in space-y-6">
         {/* Page Header */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
             <p className="text-sm text-muted-foreground">
@@ -32,19 +34,11 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Select defaultValue="7days">
-              <SelectTrigger className="w-[140px]">
-                <Calendar className="mr-2 h-4 w-4" />
-                <SelectValue placeholder="Select period" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="today">Today</SelectItem>
-                <SelectItem value="7days">Last 7 Days</SelectItem>
-                <SelectItem value="30days">Last 30 Days</SelectItem>
-                <SelectItem value="90days">Last 90 Days</SelectItem>
-              </SelectContent>
-            </Select>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <DateRangePicker
+              dateRange={dateRange}
+              onDateRangeChange={setDateRange}
+            />
 
             <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2">
               <span className="text-xs text-muted-foreground">POS URL:</span>
