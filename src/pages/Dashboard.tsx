@@ -6,6 +6,7 @@ import { StatCard } from "@/components/dashboard/StatCard";
 import { TodayStats } from "@/components/dashboard/TodayStats";
 import { VisitsChart } from "@/components/dashboard/VisitsChart";
 import { CustomerPieChart } from "@/components/dashboard/CustomerPieChart";
+import { RecentActivities } from "@/components/dashboard/RecentActivities";
 import { DateRangePicker } from "@/components/analytics/DateRangePicker";
 import { Users, IndianRupee, ShoppingCart, QrCode, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -95,6 +96,9 @@ const Dashboard = () => {
             <CustomerPieChart />
           </div>
         </div>
+
+        {/* Recent Activities */}
+        <RecentActivities />
       </div>
     </DashboardLayout>
   );
